@@ -30,3 +30,5 @@ Pre-aggregate inventory based on balance on hand and shipments received. The que
 Data is pushed at radom intervals into CosmosDB. The items s, d, h will each land in their own collection. Using the change feed we will trigger Azure Durable Functions using durable entities to maintain state. Once all criteria is met we will drop the aggregated data in a fourth collection.
 
 We should expect to use a single entity per day and per store.
+
+![image](https://user-images.githubusercontent.com/17349002/79263906-a990fb80-7e61-11ea-9167-ebea85f3367c.png)

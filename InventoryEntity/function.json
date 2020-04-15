@@ -1,0 +1,10 @@
+{
+  "bindings": [
+    {
+      "name": "name",
+      "type": "entityTrigger",
+      "direction": "in"
+    }
+  ],
+  "scriptFile": "../dist/InventoryEntity/index.js"
+}

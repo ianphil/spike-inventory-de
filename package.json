@@ -1,0 +1,19 @@
+{
+  "name": "spike-inventory-de",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "durable-functions": "^1.3.3"
+  },
+  "devDependencies": {
+    "@azure/functions": "^1.0.2-beta2",
+    "typescript": "^3.3.3"
+  }
+}

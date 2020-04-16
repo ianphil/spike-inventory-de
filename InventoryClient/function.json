@@ -1,0 +1,22 @@
+{
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "name": "req",
+      "direction": "in",
+      "methods": ["get", "post"],
+      "route": "stores/{storeId}"
+    },
+    {
+      "type": "http",
+      "name": "$return",
+      "direction": "out"
+    },
+    {
+      "name": "client",
+      "type": "durableClient",
+      "direction": "in"
+    }
+  ],
+  "scriptFile": "../dist/InventoryClient/index.js"
+}

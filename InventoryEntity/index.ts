@@ -1,18 +1,23 @@
 ﻿import * as df from 'durable-functions';
 
 const entityFunction = df.entity((context) => {
-  const currentValue = context.df.getState(() => 0);
+  const event = context.df.getInput() as any;
+
+  const currentState = context.df.getState(() => {
+    return { amount: 0 };
+  });
   switch (context.df.operationName) {
     case 'add':
-      const amount = context.df.getInput();
+      const amount = event.amount;
       // @ts-ignore
-      context.df.setState(currentValue + amount);
+      currentState.amount += amount;
+      context.df.setState(currentState);
       break;
     case 'reset':
-      context.df.setState(0);
+      context.df.setState({ amount: 0 });
       break;
     case 'get':
-      context.df.return(currentValue);
+      context.df.return(currentState);
       break;
   }
 });

@@ -7,8 +7,9 @@ Spike on basic inventory math using Durable Entities
 - See the [Azure Durable Functions prerequisites](https://docs.microsoft.com/en-us/azure/azure-functions/durable/quickstart-js-vscode#prerequisites)
 - Install the durable functions binding extension:
 
-```
+```bash
 func extensions install --package Microsoft.Azure.WebJobs.Extensions.DurableTask --version 2.1.0
+func extensions install --package Microsoft.Azure.WebJobs.Extensions.CosmosDB --version 3.0.5
 ```
 
 # Running the Azure Function

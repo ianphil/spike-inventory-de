@@ -1,0 +1,20 @@
+{
+  "bindings": [
+    {
+      "type": "cosmosDBTrigger",
+      "name": "documents",
+      "direction": "in",
+      "leaseCollectionName": "leases",
+      "connectionStringSetting": "CosmosDB",
+      "databaseName": "kroger-inventory-db",
+      "collectionName": "storeEvents",
+      "createLeaseCollectionIfNotExists": "true"
+    },
+    {
+      "name": "client",
+      "type": "durableClient",
+      "direction": "in"
+    }
+  ],
+  "scriptFile": "../dist/InventoryCosmosTrigger/index.js"
+}

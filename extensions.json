@@ -6,6 +6,12 @@
     "bindings": ["blobtrigger", "queue", "queuetrigger", "table", "blob"]
   },
   {
+    "id": "Microsoft.Azure.WebJobs.Extensions.CosmosDB",
+    "version": "3.0.5",
+    "name": "CosmosDB",
+    "bindings": ["cosmosdbtrigger", "cosmosdb"]
+  },
+  {
     "id": "Microsoft.Azure.WebJobs.Extensions.DurableTask",
     "version": "2.2.0",
     "name": "DurableTask",

@@ -30,6 +30,7 @@ jobs:
     - name: 'Resolve Project Dependencies Using Npm'
       shell: bash
       run: |
+        func extensions install --package Microsoft.Azure.WebJobs.Extensions.DurableTask --version 2.1.0
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         npm install
         npm run build --if-present

@@ -38,6 +38,7 @@ jobs:
       run: |
         npm install -g azure-functions-core-tools@3
         func extensions install --package Microsoft.Azure.WebJobs.Extensions.DurableTask --version 2.1.0
+        func extensions install --package Microsoft.Azure.WebJobs.Extensions.CosmosDB --version 3.0.5
 
     - name: 'Resolve Project Dependencies Using Npm'
       shell: bash

@@ -7,8 +7,13 @@
       "leaseCollectionName": "leases",
       "connectionStringSetting": "CosmosDB",
       "databaseName": "kroger-inventory-db",
-      "collectionName": "stores",
+      "collectionName": "storeEvents",
       "createLeaseCollectionIfNotExists": "true"
+    },
+    {
+      "name": "client",
+      "type": "durableClient",
+      "direction": "in"
     }
   ],
   "scriptFile": "../dist/InventoryCosmosTrigger/index.js"

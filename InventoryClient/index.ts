@@ -8,7 +8,7 @@ const client: AzureFunction = async function(context, req: HttpRequest) {
   const entityId = new df.EntityId('InventoryEntity', `${storeId}`);
 
   if (req.method === 'POST') {
-    await client.signalEntity(entityId, 'add', req.body);
+    await client.signalEntity(entityId, 'shipment.update', req.body);
 
     context.res.status = 200;
 

@@ -1,12 +1,12 @@
 ﻿import * as df from 'durable-functions';
 
-interface ItemData {
+export interface ItemData {
   sku: string;
   amount: number;
   detail: any;
 }
 
-type InventoryEvent =
+export type InventoryEvent =
   | {
       type: 'onHand.update';
       documentId: string;
@@ -23,11 +23,11 @@ type InventoryEvent =
       data: ItemData[];
     };
 
-interface ItemsAggregate {
+export interface ItemsAggregate {
   [sku: string]: ItemData;
 }
 
-interface InventoryState {
+export interface InventoryState {
   storeId: string;
   items: ItemsAggregate;
   events: InventoryEvent[];
@@ -66,6 +66,24 @@ function aggregateItems(inventoryEvents: InventoryEvent[]): ItemsAggregate {
   return itemsAggregate;
 }
 
+export function entityReducer(
+  state: InventoryState,
+  event: InventoryEvent
+): InventoryState {
+  switch (event.type) {
+    case 'onHand.update':
+    case 'shipment.update':
+    case 'detail.update':
+      state.events.push(event);
+      state.items = aggregateItems(state.events);
+
+      return state;
+
+    default:
+      return state;
+  }
+}
+
 const entityFunction = df.entity((context) => {
   const input = context.df.getInput() as any;
   const storeId = context.df.entityName;
@@ -90,19 +108,9 @@ const entityFunction = df.entity((context) => {
     return;
   }
 
-  switch (event.type) {
-    case 'onHand.update':
-    case 'shipment.update':
-    case 'detail.update':
-      currentState.events.push(event);
+  const nextState = entityReducer(currentState, event);
 
-      currentState.items = aggregateItems(currentState.events);
-      context.df.setState(currentState);
-      break;
-
-    default:
-      break;
-  }
+  context.df.setState(nextState);
 });
 
 export default entityFunction;

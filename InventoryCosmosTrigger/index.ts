@@ -10,8 +10,6 @@ const cosmosDBTrigger: AzureFunction = async function(
   if (!!documents && documents.length > 0) {
     const { storeId, type, data, id: documentId } = documents[0];
 
-    console.log({ documentId, type, data });
-
     const entityId = new df.EntityId('InventoryEntity', `${storeId}`);
     client.signalEntity(entityId, type, { documentId, data });
   }

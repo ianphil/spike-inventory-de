@@ -33,27 +33,33 @@ interface InventoryState {
   events: InventoryEvent[];
 }
 
-// function createItem(sku: string): Item {
-//   return {
-//     sku,
-//     amount: 0,
-//     events: [],
-//   };
-// }
-
-function aggregateItems(inventoryEvents: InventoryEvent[]) {
+function aggregateItems(inventoryEvents: InventoryEvent[]): ItemsAggregate {
+  const latestDocumentEvents: Record<string, InventoryEvent> = {};
   const itemsAggregate: ItemsAggregate = {};
 
   inventoryEvents.forEach((inventoryEvent) => {
+    // Overwrite events that have the same `documentId` to account for updates
+    latestDocumentEvents[inventoryEvent.documentId] = inventoryEvent;
+  });
+
+  Object.values(latestDocumentEvents).forEach((inventoryEvent) => {
     inventoryEvent.data.forEach((item) => {
-      let aggregatedItem = itemsAggregate[item.sku];
-      if (!aggregatedItem) {
-        aggregatedItem = item;
-      } else {
-        Object.assign(aggregatedItem, item);
+      const existingItem = itemsAggregate[item.sku];
+
+      if (!existingItem) {
+        itemsAggregate[item.sku] = { ...item };
+        return;
       }
 
-      itemsAggregate[item.sku] = aggregatedItem;
+      switch (inventoryEvent.type) {
+        case 'detail.update':
+          existingItem.detail = item.detail;
+          break;
+        case 'shipment.update':
+        case 'onHand.update':
+          existingItem.amount += item.amount || 0;
+          break;
+      }
     });
   });
 
@@ -87,13 +93,12 @@ const entityFunction = df.entity((context) => {
   switch (event.type) {
     case 'onHand.update':
     case 'shipment.update':
+    case 'detail.update':
       currentState.events.push(event);
-      // currentState.totals = aggregateItems(currentState.events);
 
       currentState.items = aggregateItems(currentState.events);
       context.df.setState(currentState);
       break;
-    case 'detail.update':
 
     default:
       break;

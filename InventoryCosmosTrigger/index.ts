@@ -8,13 +8,10 @@ const cosmosDBTrigger: AzureFunction = async function(
   const client = df.getClient(context);
 
   if (!!documents && documents.length > 0) {
-    const { storeId, count } = documents[0];
-    context.log('Store id: ', storeId);
-    context.log('Store count: ', count);
-    context.log('Document Id: ', documents[0].id);
+    const { storeId, type, data, id: documentId } = documents[0];
 
     const entityId = new df.EntityId('InventoryEntity', `${storeId}`);
-    client.signalEntity(entityId, 'add', { amount: count });
+    client.signalEntity(entityId, type, { documentId, data });
   }
 };
 

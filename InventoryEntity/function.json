@@ -6,5 +6,6 @@
       "direction": "in"
     }
   ],
-  "scriptFile": "../dist/InventoryEntity/index.js"
+  "scriptFile": "../dist/InventoryEntity/index.js",
+  "entryPoint": "entityFunction"
 }

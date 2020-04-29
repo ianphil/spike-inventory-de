@@ -1,4 +1,5 @@
-import { entityReducer, InventoryState, InventoryEvent } from './index';
+import { InventoryState, InventoryEvent } from './index';
+import { entityReducer } from './entityReducer';
 
 describe('entity reducer', () => {
   it('should respond to shipment.update events', () => {

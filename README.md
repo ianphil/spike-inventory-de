@@ -14,26 +14,56 @@ func extensions install --package Microsoft.Azure.WebJobs.Extensions.CosmosDB --
 
 # Running the Azure Function
 
-1. In VS Code, press <kbd>F5</kbd> to start the function host.
+## 1. Set up a Cosmos database
 
-The `/api/stores/` route provides a simple command/query endpoint for keeping a counter per store.
-
-- `GET /api/stores/{storeId}` will return the current state of a store. The response should look like:
+Set up a Cosmos Database in your subscription. The connection string will go in `./local.settings.json` under the `CosmosDB` setting:
 
 ```json
 {
-  "amount": 42
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "...",
+    "CosmosDB": "AccountEndpoint=https://...",
+    "FUNCTIONS_WORKER_RUNTIME": "node"
+  }
 }
 ```
 
-E.g., http://localhost:7071/api/stores/2
+Then, in [`./InventoryCosmosTrigger/function.json`](./InventoryCosmosTrigger/function.json), specify the:
 
-- `POST /api/stores/{storeId}` will send an event to update the state of the store. The body should look like:
+- `leaseCollectionName`
+- `databaseName`
+- `collectionName`
+
+Or use the defaults.
+
+## 2. Start the function host
+
+In VS Code, press <kbd>F5</kbd> to start the function host.
+
+When you update or insert an item into the Cosmos DB collection you created, it will trigger the [`InventoryCosmosTrigger`](./InventoryCosmosTrigger/index.ts) to start accumulating values for that store ID.
+
+An item in the collection looks like this:
 
 ```json
 {
-  "amount": 1
+  "type": "shipment.update",
+  "storeId": "store004",
+  "data": [
+    {
+      "sku": "item0",
+      "amount": 1000
+    },
+    {
+      "sku": "item1",
+      "amount": 1000
+    },
+    {
+      "sku": "item2",
+      "amount": 0
+    }
+  ]
 }
 ```
 
-Where `"amount"` is the amount to add, in this example.
+Where `type` is `"shipment.update"`, `"onHand.update"`, or `"detail.update"`.

@@ -29,13 +29,13 @@ Set up a Cosmos Database in your subscription. The connection string will go in 
 }
 ```
 
-Then, in [`./InventoryCosmosTrigger/function.json`](./InventoryCosmosTrigger/function.json), specify the:
+Then, in your `local.settings.json` file, specify these properties:
 
 - `leaseCollectionName`
 - `databaseName`
 - `collectionName`
 
-Or use the defaults.
+Your `local.settings.json` structure can be copied from [`local.settings.template.json`](./local.settings.template.json).
 
 ## 2. Start the function host
 
@@ -66,4 +66,4 @@ An item in the collection looks like this:
 }
 ```
 
-Where `type` is `"shipment.update"`, `"onHand.update"`, or `"detail.update"`.
+Where `type` is `"shipment.update"`, `"onHand.update"`, or `"detail.update"`, and `data` contains an array of item information, including `sku`, `amount`, and `detail`.

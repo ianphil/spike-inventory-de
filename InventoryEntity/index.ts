@@ -1,4 +1,5 @@
 ﻿import * as df from 'durable-functions';
+import { entityReducer } from './entityReducer';
 
 export interface ItemData {
   sku: string;
@@ -33,7 +34,9 @@ export interface InventoryState {
   events: InventoryEvent[];
 }
 
-function aggregateItems(inventoryEvents: InventoryEvent[]): ItemsAggregate {
+export function aggregateItems(
+  inventoryEvents: InventoryEvent[]
+): ItemsAggregate {
   const latestDocumentEvents: Record<string, InventoryEvent> = {};
   const itemsAggregate: ItemsAggregate = {};
 
@@ -66,25 +69,7 @@ function aggregateItems(inventoryEvents: InventoryEvent[]): ItemsAggregate {
   return itemsAggregate;
 }
 
-export function entityReducer(
-  state: InventoryState,
-  event: InventoryEvent
-): InventoryState {
-  switch (event.type) {
-    case 'onHand.update':
-    case 'shipment.update':
-    case 'detail.update':
-      state.events.push(event);
-      state.items = aggregateItems(state.events);
-
-      return state;
-
-    default:
-      return state;
-  }
-}
-
-const entityFunction = df.entity((context) => {
+export const entityFunction = df.entity((context) => {
   const input = context.df.getInput() as any;
   const storeId = context.df.entityName;
 
@@ -112,5 +97,3 @@ const entityFunction = df.entity((context) => {
 
   context.df.setState(nextState);
 });
-
-export default entityFunction;

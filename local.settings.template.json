@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "CosmosDB": "AccountEndpoint=",
+    "leaseCollectionName": "",
+    "databaseName": "",
+    "collectionName": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node"
+  }
+}

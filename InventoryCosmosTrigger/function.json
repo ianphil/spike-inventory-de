@@ -4,10 +4,10 @@
       "type": "cosmosDBTrigger",
       "name": "documents",
       "direction": "in",
-      "leaseCollectionName": "leases",
+      "leaseCollectionName": "%leaseCollectionName%",
       "connectionStringSetting": "CosmosDB",
-      "databaseName": "kroger-inventory-db",
-      "collectionName": "storeEvents",
+      "databaseName": "%databaseName%",
+      "collectionName": "%collectionName%",
       "createLeaseCollectionIfNotExists": "true"
     },
     {

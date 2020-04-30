@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "Event Schema",
+  "description": "The schema for changefeed events received by this Azure Function.",
+  "default": {},
+  "additionalProperties": true,
+  "required": ["type", "documentId", "data"],
+  "properties": {
+    "type": {
+      "$id": "#/properties/type",
+      "type": "string",
+      "enum": ["shipment.update", "onHand.update", "detail.update"],
+      "title": "Event type",
+      "examples": ["shipment.update"]
+    },
+    "documentId": {
+      "$id": "#/properties/documentId",
+      "type": "string",
+      "title": "The Cosmos DB Document ID",
+      "examples": ["9471ec96-220f-xxxx-xxxx-e692f557adb0"]
+    },
+    "data": {
+      "$id": "#/properties/data",
+      "title": "Items to be updated",
+      "description": "An explanation about the purpose of this instance.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Item"
+      },
+      "examples": [
+        [
+          {
+            "sku": "item001",
+            "amount": 25.0
+          }
+        ]
+      ]
+    }
+  },
+  "definitions": {
+    "Item": {
+      "type": "object",
+      "title": "An item entry",
+      "examples": [
+        {
+          "sku": "item0001",
+          "amount": 25.0,
+          "detail": "An item"
+        }
+      ],
+      "additionalProperties": true,
+      "required": ["sku"],
+      "properties": {
+        "sku": {
+          "$id": "#/properties/data/items/properties/sku",
+          "type": "string",
+          "title": "The item's SKU"
+        },
+        "amount": {
+          "$id": "#/properties/data/items/properties/amount",
+          "type": "integer",
+          "title": "The current count of the item",
+          "examples": [25]
+        },
+        "detail": {
+          "$id": "#/properties/data/items/properties/detail",
+          "type": "string",
+          "title": "The item's detail",
+          "default": "",
+          "examples": ["An item"]
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { InventoryState, InventoryEvent, aggregateItems } from './index';
+
 export function entityReducer(
   state: InventoryState,
   event: InventoryEvent

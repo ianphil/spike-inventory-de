@@ -1,5 +1,15 @@
 ﻿import * as df from 'durable-functions';
 import { entityReducer } from './entityReducer';
+import { readFileSync } from 'fs';
+import * as Ajv from 'ajv';
+
+const ajv = new Ajv();
+
+const eventSchema = JSON.parse(
+  readFileSync(`./Shared/eventSchema.json`, 'utf8')
+);
+
+const validate = ajv.compile(eventSchema);
 
 export interface ItemData {
   sku: string;
@@ -85,6 +95,12 @@ export const entityFunction = df.entity((context) => {
     type: context.df.operationName,
     ...input,
   } as InventoryEvent;
+
+  validate(event);
+  if (validate.errors) {
+    context.log(validate.errors);
+    throw new Error('Event validation failed');
+  }
 
   context.log(event);
 
